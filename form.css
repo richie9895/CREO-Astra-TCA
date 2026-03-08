@@ -1,0 +1,32 @@
+/* simple two-column layout for readability */
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f9f9f9;
+}
+h1 {
+  margin-bottom: 1rem;
+}
+form {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.5rem 1rem;
+  background: #fff;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+form label {
+  display: contents;
+}
+form input,
+form select {
+  width: 100%;
+  padding: 0.25rem;
+  box-sizing: border-box;
+}
+button {
+  grid-column: span 2;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}

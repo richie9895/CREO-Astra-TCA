@@ -1,11 +1,14 @@
 {
   "name": "creo-astra-tca",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "run": "ts-node src/getData.ts",
-    "analyze": "ts-node src/dataAnalysis.ts"
+    "run": "ts-node --esm src/getData.ts",
+    "analyze": "ts-node --esm src/dataAnalysis.ts"
   },
-
+  "ts-node": {
+    "esm": true
+  },
   "devDependencies": {
     "ts-node": "^10.9.2"
   }

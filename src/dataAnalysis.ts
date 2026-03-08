@@ -1,2 +1,1 @@
 import { allLeads, allLeadsReady } from "./getData";
-
