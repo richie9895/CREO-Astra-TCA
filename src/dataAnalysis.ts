@@ -155,41 +155,44 @@ export async function runAnalysis(weights:weightings) {
     const today = new Date();
     var leadDate:Date = new Date();
     //prune repeated data
-    const uniqueLeads = Array.from(new Map(allLeads.map(lead => [lead.lead_id, lead])).values());
+    const freshLeads = structuredClone(allLeads);
+    const uniqueLeads = Array.from(new Map(freshLeads.map(lead => [lead.lead_id, lead])).values());
     uniqueLeads.forEach((lead) => {
+        let score = 0;
         //handle date scoring - more recent equals higher scores
         leadDate = dateNormalisation(lead)!;
 
         const diffInMs = today.getTime() - leadDate.getTime();
         const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        lead.score = lead.score + Math.floor((365 - diffInDays) * weights.lead_date_weight * 1/365);
+        score = score + Math.floor((365 - diffInDays) * weights.lead_date_weight * 1/365);
 
         //handle all other scoring:
-        lead.score = lead.score + Math.floor(defaultScores.property_type_score[lead.property_type] * weights.property_type_weight * 1/4);
-        lead.score = lead.score + Math.floor(defaultScores.neighbourhood_score[lead.neighbourhood] * weights.neighbourhood_weight * 1/3);
-        lead.score = lead.score + Math.floor(defaultScores.requested_timeline_score[lead.requested_timeline] * weights.requested_timeline_weight * 1/3);
-        lead.score = lead.score + Math.floor(defaultScores.referral_source_score[lead.referral_source] * weights.referral_source_weight * 1/3);
-        lead.score = lead.score + Math.floor(defaultScores.homeowner_status_score[lead.homeowner_status] * weights.homeowner_status_weight * 1/3);
-        lead.score = lead.score + Math.floor(defaultScores.customer_age_bracket_score[lead.customer_age_bracket] * weights.customer_age_bracket_weight * 1/6);
-        lead.score = lead.score + Math.floor(defaultScores.expected_profit_band_score[lead.expected_profit_band] * weights.expected_profit_band_weight * 1/3);
+        score = score + Math.floor(defaultScores.property_type_score[lead.property_type] * weights.property_type_weight * 1/4);
+        score = score + Math.floor(defaultScores.neighbourhood_score[lead.neighbourhood] * weights.neighbourhood_weight * 1/3);
+        score = score + Math.floor(defaultScores.requested_timeline_score[lead.requested_timeline] * weights.requested_timeline_weight * 1/3);
+        score = score + Math.floor(defaultScores.referral_source_score[lead.referral_source] * weights.referral_source_weight * 1/3);
+        score = score + Math.floor(defaultScores.homeowner_status_score[lead.homeowner_status] * weights.homeowner_status_weight * 1/3);
+        score = score + Math.floor(defaultScores.customer_age_bracket_score[lead.customer_age_bracket] * weights.customer_age_bracket_weight * 1/6);
+        score = score + Math.floor(defaultScores.expected_profit_band_score[lead.expected_profit_band] * weights.expected_profit_band_weight * 1/3);
 
         //handle distance scoring, closer jobs have greater scores
-        lead.score = lead.score + Math.floor((50- lead.distance_to_queens_km * weights.distance_to_queens_km_weight)*1/50);
+        score = score + Math.floor((50- lead.distance_to_queens_km * weights.distance_to_queens_km_weight)*1/50);
 
         //handle pets
         if(lead.has_pets === false){
-            lead.score = lead.score + 1;
+            score = score + 1;
         }
 
         if(lead.estimated_job_size_sqft !== null){
             //handle square footage scoring, larger jobs have greater scores
-            lead.score = lead.score + Math.floor(lead.estimated_job_size_sqft * weights.estimated_job_size_sqft_weight * 1/4000);
+            score = score + Math.floor(lead.estimated_job_size_sqft * weights.estimated_job_size_sqft_weight * 1/4000);
         }
 
         //no profit from non profitable jobs
-        if(lead.expected_profit_band === null){
-            lead.score = 0;
+        if(lead.expected_profit_band === null || 365 - diffInDays < 0){
+            score = 0;
         }
+        lead.score = score;
     });
     console.log(uniqueLeads.sort((a,b) => b.score - a.score));
     return uniqueLeads.sort((a,b) => b.score - a.score);
@@ -213,5 +216,3 @@ function dateNormalisation(currentLead:Lead) {
     }
 
 }
-
-runAnalysis(defaultWeights);
