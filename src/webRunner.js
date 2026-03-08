@@ -102,15 +102,15 @@ function displayLeads(leads) {
                 <span class="rank-number">#${index + 1}</span>
                 <div class="details">
                     <strong>Lead ID: ${lead.lead_id}</strong>
-                    <p>${lead.property_type} • ${lead.neighbourhood}</p>
+                    <p>${lead.property_type} • ${lead.neighbourhood} • ${lead.distance_to_queens_km} km (From Queen's)</p>
                     <small class="metadata">
-                        Timeline: ${lead.requested_timeline} | Profit: ${lead.expected_profit_band}
+                        Timeline: ${lead.requested_timeline} | Profit: ${lead.expected_profit_band} | Contact: ${lead.preferred_contact}
                     </small>
                 </div>
             </div>
             <div class="score-container">
                 <div class="score-badge">${Math.round(lead.score)}</div>
-                <small>Astra Score</small>
+                <small>Priority Score</small>
             </div>
         `;
         listContainer.appendChild(card);
