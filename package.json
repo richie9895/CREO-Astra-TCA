@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "run": "node --loader ts-node/esm src/getData.ts",
-    "analyze": "node --loader ts-node/esm src/dataAnalysis.ts"
+    "analyze": "node --loader ts-node/esm src/dataAnalysis.ts",
+    "UItest": "node --loader ts-node/esm src/webRunner.js"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",

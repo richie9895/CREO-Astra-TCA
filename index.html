@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREO Astra | Lead Prioritization Engine</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="logo">CREO <span>Astra</span></div>
+        <p>Dynamic Lead Scoring Interface</p>
+    </header>
+
+    <div class="dashboard-container">
+        <aside id="sidebar">
+            <h3>Scoring Factors</h3>
+            <p class="helper-text">Adjust the sliders to re-calculate lead priority in real-time.</p>
+            <div id="controls">
+                <div class="control-group">
+                    <label for="lead_date_weight">Lead Date</label>
+                    <input type="range" id="lead_date_weight" name="lead_date_weight" min="0" max="10" step="0.1" value="1">
+                </div>
+                <div class="control-group">
+                    <label for="property_type_weight">Property Type</label>
+                    <input type="range" id="property_type_weight" name="property_type_weight" min="0" max="10" step="0.1" value="8">
+                </div>
+                <div class="control-group">
+                    <label for="neighbourhood_weight">Neighbourhood</label>
+                    <input type="range" id="neighbourhood_weight" name="neighbourhood_weight" min="0" max="10" step="0.1" value="8">
+                </div>
+                <div class="control-group">
+                    <label for="requested_timeline_weight">Requested Timeline</label>
+                    <input type="range" id="requested_timeline_weight" name="requested_timeline_weight" min="0" max="10" step="0.1" value="8">
+                </div>
+                <div class="control-group">
+                    <label for="referral_source_weight">Referral Source</label>
+                    <input type="range" id="referral_source_weight" name="referral_source_weight" min="0" max="10" step="0.1" value="8">
+                </div>
+                <div class="control-group">
+                    <label for="homeowner_status_weight">Homeowner Status</label>
+                    <input type="range" id="homeowner_status_weight" name="homeowner_status_weight" min="0" max="10" step="0.1" value="8">
+                </div>
+                <div class="control-group">
+                    <label for "customer_age_bracket_weight">Customer Age Bracket</label>
+                    <input type= "range" id= "customer_age_bracket_weight"name= "customer_age_bracket_weight" min= "0"name= "customer_age_bracket_weight"value= "8">
+                </div>
+                <div class= "control-group">
+                    <label for= "expected_profit_band_weight">Expected Profit Band</label>
+                    <input type= "range"id= "expected_profit_band_weight"name= "expected_profit_band_weight" min= "0"name= "expected_profit_band_weight"value= "8">
+                </div>
+            </div>
+        </aside>
+
+        <main id="main-content">
+            <div class="feed-header">
+                <h2>Priority Ranking</h2>
+                <div id="status-tag">Live Updates Enabled</div>
+            </div>
+            <div id="lead-list">
+                <div class="loader">Loading leads...</div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="./src/webRunner.js"></script>
+</body>
+</html>

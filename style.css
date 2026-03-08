@@ -1,0 +1,30 @@
+:root {
+    --primary: #002d72; /* Queen's University Navy */
+    --accent: #ffb81c;  /* Queen's Gold */
+    --bg: #f8f9fa;
+    --text: #333;
+}
+
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); color: var(--text); }
+
+.app-header { background: var(--primary); color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+.logo { font-size: 1.5rem; font-weight: bold; }
+.logo span { color: var(--accent); }
+
+.dashboard-container { display: flex; height: calc(100vh - 70px); }
+
+#sidebar { width: 320px; background: white; padding: 1.5rem; border-right: 1px solid #ddd; overflow-y: auto; }
+#sidebar h3 { margin-top: 0; color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; }
+
+#main-content { flex-grow: 1; padding: 2rem; overflow-y: auto; }
+
+.control-group { margin-bottom: 1.2rem; background: #f1f3f5; padding: 10px; border-radius: 6px; }
+.control-group label { display: block; text-transform: capitalize; font-weight: 600; margin-bottom: 5px; font-size: 0.85rem; }
+.control-group span { float: right; color: var(--primary); font-weight: bold; }
+
+.lead-card { background: white; padding: 1.2rem; margin-bottom: 1rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; transition: transform 0.2s; border-left: 5px solid transparent; }
+.lead-card:hover { transform: translateY(-3px); border-left-color: var(--accent); }
+
+.score-badge { background: var(--primary); color: white; padding: 8px 15px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; min-width: 60px; text-align: center; }
+
+.helper-text { font-size: 0.8rem; color: #666; margin-bottom: 1.5rem; }
