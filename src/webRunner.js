@@ -1,12 +1,15 @@
 import { runAnalysis, defaultWeights } from '/dist/dataAnalysis.js';
 
 async function updateUI() {
-
     var currentWeights = getCurrentWeights();
     var leads = await runAnalysis(currentWeights);
     console.log(getCurrentWeights());
     displayLeads(leads);
+}
 
+async function resetUI(){
+    var leads = await runAnalysis(defaultWeights);
+    displayLeads(leads);
 }
 
 function getCurrentWeights() {
@@ -64,4 +67,10 @@ document.querySelectorAll('#controls input[type="range"]').forEach(slider => {
     });
 });
 
-updateUI();
+const resetButton = document.getElementById('reset-button');
+
+resetButton.addEventListener('click', () => {   
+    resetUI();
+});
+
+resetUI();
