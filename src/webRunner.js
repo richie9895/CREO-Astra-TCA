@@ -3,21 +3,29 @@ import { runAnalysis, defaultWeights } from '/dist/dataAnalysis.js';
 async function updateUI() {
 
     var currentWeights = getCurrentWeights();
-    var leads = await runAnalysis(defaultWeights);
+    var leads = await runAnalysis(currentWeights);
+    console.log(getCurrentWeights());
     displayLeads(leads);
 
 }
 
 function getCurrentWeights() {
     return {
-        lead_date: parseFloat(document.getElementById('lead_date_weight').value),
-        property_type: parseFloat(document.getElementById('property_type_weight').value),
-        neighbourhood: parseFloat(document.getElementById('neighbourhood_weight').value),
-        requested_timeline: parseFloat(document.getElementById('requested_timeline_weight').value),
-        referral_source: parseFloat(document.getElementById('referral_source_weight').value),
-        homeowner_status: parseFloat(document.getElementById('homeowner_status_weight').value),
-        customer_age_bracket: parseFloat(document.getElementById('customer_age_bracket_weight').value),
-        expected_profit_band: parseFloat(document.getElementById('expected_profit_band_weight').value)
+        lead_id_weight: 0,
+        lead_date_weight: parseFloat(document.getElementById('lead_date_weight').value),
+        property_type_weight: parseFloat(document.getElementById('property_type_weight').value),
+        neighbourhood_weight: parseFloat(document.getElementById('neighbourhood_weight').value),
+        estimated_job_size_sqft_weight: 0,
+        requested_timeline_weight: parseFloat(document.getElementById('requested_timeline_weight').value),
+        referral_source_weight: parseFloat(document.getElementById('referral_source_weight').value),
+        homeowner_status_weight: parseFloat(document.getElementById('homeowner_status_weight').value),
+        preferred_contact_weight: 0,
+        lead_capture_weather_weight: 0,
+        distance_to_queens_km_weight: 0,
+        customer_age_bracket_weight: parseFloat(document.getElementById('customer_age_bracket_weight').value),
+        has_pets_weight: 0,
+        lead_weekday_weight: 0,
+        expected_profit_band_weight: parseFloat(document.getElementById('expected_profit_band_weight').value)
     };
 }
 
