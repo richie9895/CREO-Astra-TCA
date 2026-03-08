@@ -1,0 +1,11 @@
+{
+  "name": "creo-astra-tca",
+  "version": "1.0.0",
+  "scripts": {
+    "run": "ts-node src/getData.ts",
+    "analyze": "ts-node src/dataAnalysis.ts"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
+  }
+}
