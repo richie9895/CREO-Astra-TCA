@@ -109,4 +109,8 @@ export function ensureLeadsLoaded(): Promise<void> {
   return _loader;
 }
 
+// perform initial load immediately and expose the promise so consumers can
+// await readiness without having to call the loader themselves.
+export const allLeadsReady: Promise<void> = ensureLeadsLoaded();
+
 
