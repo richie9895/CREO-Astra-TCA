@@ -5,6 +5,7 @@
     "run": "ts-node src/getData.ts",
     "analyze": "ts-node src/dataAnalysis.ts"
   },
+
   "devDependencies": {
     "ts-node": "^10.9.2"
   }
