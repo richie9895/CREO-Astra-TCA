@@ -16,35 +16,45 @@ export interface LeadElements {
   expected_profit_band: string;
 }
 
-export async function getAllLeads(offset: number = 0, allLeads: LeadElements[] = []): Promise<LeadElements[]> {
-    const LIMIT = 500;
-    const url = `https://dqcqexieqlfqylqwogsj.supabase.co/rest/v1/inbound_leads?limit=${LIMIT}&offset=${offset}`;
+export async function getAllLeads(): Promise<LeadElements[]> {
 
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'apikey': 'sb_publishable_iFgXlEVP5UqmrZx6l1nVgw_6WD5CPpy',
-            'Content-Type': 'application/json'
+    const LIMIT = 250; // server cap
+    let start = 0;
+    let allLeads: LeadElements[] = [];
+
+    while (true) {
+
+        const end = start + LIMIT - 1;
+
+        const response = await fetch(
+            "https://dqcqexieqlfqylqwogsj.supabase.co/rest/v1/inbound_leads?select=*",
+            {
+                method: "GET",
+                headers: {
+                    apikey: "sb_publishable_iFgXlEVP5UqmrZx6l1nVgw_6WD5CPpy",
+                    Authorization: "Bearer sb_publishable_iFgXlEVP5UqmrZx6l1nVgw_6WD5CPpy",
+                    "Content-Type": "application/json",
+                    "Range-Unit": "items",
+                    "Range": `${start}-${end}`
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(await response.text());
         }
-    });
 
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        const data: LeadElements[] = await response.json();
+        allLeads = [...allLeads, ...data];
+
+        if (data.length < LIMIT) break;
+
+        start += LIMIT;
     }
 
-    const data = await response.json() as LeadElements[];
-    const updatedLeads = [...allLeads, ...data];
-
-    if (data.length === LIMIT) {
-        // still more pages; continue fetching
-        return getAllLeads(offset + LIMIT, updatedLeads);
-    }
-
-    // final page reached
-    return updatedLeads;
+    console.log("Total leads:", allLeads.length);
+    return allLeads;
 }
-
 
 export class Lead {
   lead_id: string;
