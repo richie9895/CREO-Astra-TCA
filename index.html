@@ -16,39 +16,63 @@
     <div class="dashboard-container">
         <aside id="sidebar">
             <h3>Scoring Factors</h3>
-            <p class="helper-text">Adjust the sliders to re-calculate lead priority in real-time.</p>
+            <p class="helper-text">Adjust the sliders to re-calculate lead priority in real-time. (Starting values are pre-optimised)</p>
             <div id="controls">
                 <div class="control-group">
                     <label for="lead_date_weight">Lead Date</label>
-                    <input type="range" id="lead_date_weight" name="lead_date_weight" min="0" max="10" step="1" value="1">
+                    <input type="range" id="lead_date_weight" name="lead_date_weight" min="0" max="15" step="1" value="1">
                 </div>
                 <div class="control-group">
                     <label for="property_type_weight">Property Type</label>
-                    <input type="range" id="property_type_weight" name="property_type_weight" min="0" max="10" step="1" value="8">
+                    <input type="range" id="property_type_weight" name="property_type_weight" min="0" max="15" step="1" value="8">
                 </div>
                 <div class="control-group">
                     <label for="neighbourhood_weight">Neighbourhood</label>
-                    <input type="range" id="neighbourhood_weight" name="neighbourhood_weight" min="0" max="10" step="1" value="8">
+                    <input type="range" id="neighbourhood_weight" name="neighbourhood_weight" min="0" max="15" step="1" value="8">
+                </div>
+                <div class="control-group">
+                    <label for="estimated_job_size_weight">Job Size</label>
+                    <input type="range" id="estimated_job_size_weight" name="estimated_job_size_weight" min="0" max="15" step="1" value="8">
                 </div>
                 <div class="control-group">
                     <label for="requested_timeline_weight">Requested Timeline</label>
-                    <input type="range" id="requested_timeline_weight" name="requested_timeline_weight" min="0" max="10" step="1" value="8">
+                    <input type="range" id="requested_timeline_weight" name="requested_timeline_weight" min="0" max="15" step="1" value="8">
                 </div>
                 <div class="control-group">
                     <label for="referral_source_weight">Referral Source</label>
-                    <input type="range" id="referral_source_weight" name="referral_source_weight" min="0" max="10" step="1" value="8">
+                    <input type="range" id="referral_source_weight" name="referral_source_weight" min="0" max="15" step="1" value="8">
                 </div>
                 <div class="control-group">
                     <label for="homeowner_status_weight">Homeowner Status</label>
-                    <input type="range" id="homeowner_status_weight" name="homeowner_status_weight" min="0" max="10" step="1" value="8">
+                    <input type="range" id="homeowner_status_weight" name="homeowner_status_weight" min="0" max="15" step="1" value="8">
+                </div>
+                <div class="control-group">
+                    <label for="preferred_contact_weight">Preferred Contact</label>
+                    <input type="range" id="preferred_contact_weight" name="preferred_contact_weight" min="0" max="15" step="1" value="8">
+                </div>
+                <div class="control-group">
+                    <label for="capture_weather_weight">Lead Capture Weather</label>
+                    <input type="range" id="capture_weather_weight" name="capture_weather_weight" min="0" max="15" step="1" value="8">
+                </div>
+                <div class="control-group">
+                    <label for="distance_weight">Distance From Queen's</label>
+                    <input type="range" id="distance_weight" name="distance_weight" min="0" max="15" step="1" value="8">
                 </div>
                 <div class="control-group">
                     <label for "customer_age_bracket_weight">Customer Age Bracket</label>
-                    <input type= "range" id= "customer_age_bracket_weight" name= "customer_age_bracket_weight" min= "0" max = "10" step = "1" value= "8">
+                    <input type= "range" id= "customer_age_bracket_weight" name= "customer_age_bracket_weight" min= "0" max = "15" step = "1" value= "8">
+                </div>
+                <div class="control-group">
+                    <label for "has_pets_weight">Has Pets</label>
+                    <input type= "range" id= "has_pets_weight" name= "has_pets_weight" min= "0" max = "15" step = "1" value= "8">
+                </div>
+                <div class="control-group">
+                    <label for "weekday_weight">Lead Weekday</label>
+                    <input type= "range" id= "weekday_weight" name= "weekday_weight" min= "0" max = "15" step = "1" value= "8">
                 </div>
                 <div class= "control-group">
                     <label for= "expected_profit_band_weight">Expected Profit Band</label>
-                    <input type= "range"id= "expected_profit_band_weight"name= "expected_profit_band_weight" min= "0" max = "10" step = "1" value= "8">
+                    <input type= "range"id= "expected_profit_band_weight"name= "expected_profit_band_weight" min= "0" max = "15" step = "1" value= "8">
                 </div>
                 <div class= "control-group">
                     <label>Reset to Defaults</label>

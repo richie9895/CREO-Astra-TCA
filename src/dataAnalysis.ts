@@ -20,7 +20,7 @@ export interface weightings{
     expected_profit_band_weight:number;
 }
 
-export interface defaultScoring{
+interface defaultScoring{
     lead_id_score:number;
     lead_date_score:number;
     property_type_score:Record<string, number>

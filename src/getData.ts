@@ -89,10 +89,6 @@ export class Lead {
   }
 }
 
-// ---------- initialization helpers (CommonJS-friendly) ----------
-// `allLeads` always holds the fetched leads, but the fetch is async.  Callers
-// should run `ensureLeadsLoaded()` once during startup or before first use.
-// After that the array is populated and can be treated as a constant.
 export const allLeads: Lead[] = [];
 let _loader: Promise<void> | null = null;
 
@@ -100,9 +96,8 @@ export function ensureLeadsLoaded(): Promise<void> {
   if (!_loader) {
     _loader = (async () => {
       const raw = await getAllLeads();
-      // pad with duplicates of last item if there aren't enough
       while (raw.length < 2500) {
-        if (raw.length === 0) break; // nothing to duplicate
+        if (raw.length === 0) break;
         raw.push({...raw[raw.length - 1]});
       }
       allLeads.push(...raw.map(r => new Lead(r)));
@@ -111,8 +106,6 @@ export function ensureLeadsLoaded(): Promise<void> {
   return _loader;
 }
 
-// perform initial load immediately and expose the promise so consumers can
-// await readiness without having to call the loader themselves.
 export const allLeadsReady: Promise<void> = ensureLeadsLoaded();
 
 
