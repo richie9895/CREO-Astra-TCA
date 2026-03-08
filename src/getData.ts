@@ -62,6 +62,7 @@ export class Lead {
   has_pets: boolean;
   lead_weekday: string;
   expected_profit_band: string;
+  score:number;
 
   constructor(data: LeadElements) {
     this.lead_id = data.lead_id;
@@ -79,6 +80,7 @@ export class Lead {
     this.has_pets = data.has_pets;
     this.lead_weekday = data.lead_weekday;
     this.expected_profit_band = data.expected_profit_band;
+    this.score = 0;
   }
 
   static async createFromAllLeads(): Promise<Lead[]> {

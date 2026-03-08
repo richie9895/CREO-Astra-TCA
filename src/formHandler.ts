@@ -1,4 +1,5 @@
-import { LeadElements } from "./getData";
+//import other datasets
+import { LeadElements } from "./getData.js";
 
 // grab the form element
 const form = document.getElementById("lead-form") as HTMLFormElement | null;
@@ -33,3 +34,6 @@ if (form) {
 } else {
   console.warn("lead-form not found in document");
 }
+
+//more form input options, just handle data collection
+

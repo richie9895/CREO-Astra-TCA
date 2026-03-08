@@ -3,13 +3,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "run": "ts-node --esm src/getData.ts",
-    "analyze": "ts-node --esm src/dataAnalysis.ts"
-  },
-  "ts-node": {
-    "esm": true
+    "run": "node --loader ts-node/esm src/getData.ts",
+    "analyze": "node --loader ts-node/esm src/dataAnalysis.ts"
   },
   "devDependencies": {
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
   }
 }
