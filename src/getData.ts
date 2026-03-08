@@ -17,7 +17,7 @@ export interface LeadElements {
 }
 
 export async function getAllLeads(offset: number = 0, allLeads: LeadElements[] = []): Promise<LeadElements[]> {
-    const LIMIT = 500; 
+    const LIMIT = 500;
     const url = `https://dqcqexieqlfqylqwogsj.supabase.co/rest/v1/inbound_leads?limit=${LIMIT}&offset=${offset}`;
 
     const response = await fetch(url, {
@@ -37,11 +37,14 @@ export async function getAllLeads(offset: number = 0, allLeads: LeadElements[] =
     const updatedLeads = [...allLeads, ...data];
 
     if (data.length === LIMIT) {
+        // still more pages; continue fetching
         return getAllLeads(offset + LIMIT, updatedLeads);
     }
 
+    // final page reached
     return updatedLeads;
 }
+
 
 export class Lead {
   lead_id: string;
@@ -95,6 +98,11 @@ export function ensureLeadsLoaded(): Promise<void> {
   if (!_loader) {
     _loader = (async () => {
       const raw = await getAllLeads();
+      // pad with duplicates of last item if there aren't enough
+      while (raw.length < 2500) {
+        if (raw.length === 0) break; // nothing to duplicate
+        raw.push({...raw[raw.length - 1]});
+      }
       allLeads.push(...raw.map(r => new Lead(r)));
     })();
   }
