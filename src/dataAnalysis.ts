@@ -147,7 +147,6 @@ async function pullUniqueData() {
     const uniqueHasPets = [...new Set(allLeads.map(lead => lead.has_pets))];
     const uniqueLeadWeekdays = [...new Set(allLeads.map(lead => lead.lead_weekday))];
     const uniqueExpectedProfitBands = [...new Set(allLeads.map(lead => lead.expected_profit_band))];
-    console.log(uniqueIds);
 }
 
 export async function runAnalysis(weights:weightings) {
@@ -216,3 +215,5 @@ function dateNormalisation(currentLead:Lead) {
     }
 
 }
+
+pullUniqueData();
