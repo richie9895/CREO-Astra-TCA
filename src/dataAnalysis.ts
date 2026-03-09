@@ -24,7 +24,7 @@ interface defaultScoring{
     lead_id_score:number;
     lead_date_score:number;
     property_type_score:Record<string, number>
-    neighbourhood_score:Record<string, number>;
+    neighbourhood_score:number;
     estimated_job_size_sqft_score:0;
     requested_timeline_score:Record<string, number>;
     referral_source_score:Record<string, number>
@@ -66,19 +66,7 @@ const defaultScores:defaultScoring = {
         'Semi-Detached':2,
         'Heritage Home':3
     },
-    neighbourhood_score: {
-        " Calvin Park ":1,
-        "Calvin Park":1,
-        "Down Town":1,
-        "Downtown":1,
-        "Portsmoth Village":1,
-        "Portsmouth Village":1,
-        "Strathcona Park":1,
-        "Sydenham Ward":1,
-        "Sydenhamm Ward":1,
-        "West End":1,
-        "Westend":1
-    },
+    neighbourhood_score: 1,
     estimated_job_size_sqft_score: 0,
     requested_timeline_score: {
         "1 month":1,
@@ -93,7 +81,8 @@ const defaultScores:defaultScoring = {
         "Facebook Ads":1,
         "Lawn Signs":1,
         "LawnSign":1,
-        "Word of Mouth/Referral": 3
+        "Word of Mouth/Referral": 3,
+        "Word-of-Mouth":3
     },
     homeowner_status_score: {
         "Own":2,
@@ -147,15 +136,19 @@ async function pullUniqueData() {
     const uniqueHasPets = [...new Set(allLeads.map(lead => lead.has_pets))];
     const uniqueLeadWeekdays = [...new Set(allLeads.map(lead => lead.lead_weekday))];
     const uniqueExpectedProfitBands = [...new Set(allLeads.map(lead => lead.expected_profit_band))];
+    console.log(uniqueEstimatedJobSize);
 }
 
 export async function runAnalysis(weights:weightings) {
+    console.trace('runAnalysis called');
     await allLeadsReady; 
     const today = new Date();
     var leadDate:Date = new Date();
     //prune repeated data
-    const freshLeads = structuredClone(allLeads);
+    const freshLeads = allLeads.map(lead => ({ ...lead }));
     const uniqueLeads = Array.from(new Map(freshLeads.map(lead => [lead.lead_id, lead])).values());
+    console.log(`uniqueLeads count: ${uniqueLeads.length}`);
+    console.log('freshLeads length:', freshLeads.length, 'uniqueLeads length:', uniqueLeads.length);
     uniqueLeads.forEach((lead) => {
         let score = 0;
         //handle date scoring - more recent equals higher scores
@@ -167,7 +160,7 @@ export async function runAnalysis(weights:weightings) {
 
         //handle all other scoring:
         score = score + Math.floor(defaultScores.property_type_score[lead.property_type] * weights.property_type_weight * 1/4);
-        score = score + Math.floor(defaultScores.neighbourhood_score[lead.neighbourhood] * weights.neighbourhood_weight * 1/3);
+        score = score + 1;
         score = score + Math.floor(defaultScores.requested_timeline_score[lead.requested_timeline] * weights.requested_timeline_weight * 1/3);
         score = score + Math.floor(defaultScores.referral_source_score[lead.referral_source] * weights.referral_source_weight * 1/3);
         score = score + Math.floor(defaultScores.homeowner_status_score[lead.homeowner_status] * weights.homeowner_status_weight * 1/3);
@@ -175,26 +168,34 @@ export async function runAnalysis(weights:weightings) {
         score = score + Math.floor(defaultScores.expected_profit_band_score[lead.expected_profit_band] * weights.expected_profit_band_weight * 1/3);
 
         //handle distance scoring, closer jobs have greater scores
-        score = score + Math.floor((50- lead.distance_to_queens_km * weights.distance_to_queens_km_weight)*1/50);
+        score = score + Math.floor((1 - lead.distance_to_queens_km / 50) * weights.distance_to_queens_km_weight);
 
         //handle pets
         if(lead.has_pets === false){
             score = score + 1;
         }
 
-        if(lead.estimated_job_size_sqft !== null){
+        if(lead.estimated_job_size_sqft !== null && lead.estimated_job_size_sqft <= 1000){
             //handle square footage scoring, larger jobs have greater scores
             score = score + Math.floor(lead.estimated_job_size_sqft * weights.estimated_job_size_sqft_weight * 1/4000);
         }
 
         //no profit from non profitable jobs
-        if(lead.expected_profit_band === null || 365 - diffInDays < 0){
+        if(lead.expected_profit_band === null /*|| 365 - diffInDays < 0*/){
+            score = 0;
+        }
+        if(isNaN(score)){
             score = 0;
         }
         lead.score = score;
     });
-    console.log(uniqueLeads.sort((a,b) => b.score - a.score));
-    return uniqueLeads.sort((a,b) => b.score - a.score);
+    //console.log(uniqueLeads.sort((a,b) => b.score - a.score));
+    console.log('top 5 scores:', uniqueLeads.slice(0,5).map(l => l.score));
+    console.log('bottom 5 scores:', uniqueLeads.slice(-5).map(l => l.score));
+    //return uniqueLeads.sort((a,b) => b.score - a.score);
+    const sorted = uniqueLeads.sort((a,b) => b.score - a.score);
+    console.log('runAnalysis top 5:', sorted.slice(0,5).map(l => ({ id: l.lead_id, score: l.score })));
+    return sorted;
 }
 
 function dateNormalisation(currentLead:Lead) {
@@ -213,7 +214,6 @@ function dateNormalisation(currentLead:Lead) {
     if (/^\d{2}-[A-Za-z]{3}-\d{4}$/.test(currentLead.lead_date)) {
         return new Date(currentLead.lead_date);
     }
-
 }
 
 pullUniqueData();

@@ -97,7 +97,9 @@ export function ensureLeadsLoaded(): Promise<void> {
   if (!_loader) {
     _loader = (async () => {
       const raw = await getAllLeads();
-      allLeads.push(...raw.map(r => new Lead(r)));
+      console.log('pushing to allLeads, current length:', allLeads.length);
+      console.log(`Total raw leads fetched: ${raw.length}`); 
+      allLeads.push(...raw.map(r => Object.freeze(new Lead(r))));
     })();
   }
   return _loader;

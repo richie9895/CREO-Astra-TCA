@@ -3,12 +3,11 @@ import { runAnalysis, defaultWeights } from '/dist/dataAnalysis.js';
 async function updateUI() {
     var currentWeights = getCurrentWeights();
     var leads = await runAnalysis(currentWeights);
-    console.log(getCurrentWeights());
     displayLeads(leads);
 }
 
 async function resetUI(){
-    var leads = await runAnalysis(defaultWeights);
+ 
     const date_slider = document.getElementById("lead_date_weight");
         if (date_slider) {
             date_slider.value = 1;
@@ -65,7 +64,10 @@ async function resetUI(){
         if (profit_slider) {
             profit_slider.value = 12;
         }
+    var leads = await runAnalysis(defaultWeights);
+    console.log('resetUI top 10 scores:', leads.slice(0,10).map(l => l.score));
     displayLeads(leads);
+
 }
 
 function getCurrentWeights() {
@@ -89,11 +91,13 @@ function getCurrentWeights() {
 }
 
 function displayLeads(leads) {
+    const snapshot = [...leads]; // take a copy immediately
+    console.log('snapshot top 10:', snapshot.slice(0,10).map(l => l.score));
     const listContainer = document.getElementById('lead-list');
-
     listContainer.innerHTML = '';
+    console.log('after clear, children:', listContainer.children.length);
 
-    leads.forEach((lead, index) => {
+    snapshot.forEach((lead, index) => {
         const card = document.createElement('div');
         card.className = 'lead-card';
 
@@ -104,7 +108,7 @@ function displayLeads(leads) {
                     <strong>Lead ID: ${lead.lead_id}</strong>
                     <p>${lead.property_type} • ${lead.neighbourhood} • ${lead.distance_to_queens_km} km (From Queen's)</p>
                     <small class="metadata">
-                        Timeline: ${lead.requested_timeline} | Profit: ${lead.expected_profit_band} | Contact: ${lead.preferred_contact}
+                        Timeline: ${lead.requested_timeline} | Profit: ${lead.expected_profit_band} | Contact: ${lead.preferred_contact}  ${lead.referral_source} ${lead.lead_date}${lead.estimated_job_size_sqft} ${lead.lead_weekday} ${lead.has_pets} ${lead.lead_capture_weather}
                     </small>
                 </div>
             </div>
@@ -115,18 +119,14 @@ function displayLeads(leads) {
         `;
         listContainer.appendChild(card);
     });
+    console.log('after render, children:', listContainer.children.length);
 }
 
 document.querySelectorAll('#controls input[type="range"]').forEach(slider => {
-    slider.addEventListener('input', () => {
-        updateUI(); 
-    });
+    slider.addEventListener('input', updateUI);
 });
 
 const resetButton = document.getElementById('reset-button');
-
-resetButton.addEventListener('click', () => {   
-    resetUI();
-});
+resetButton.addEventListener('click', resetUI);
 
 resetUI();
