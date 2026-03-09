@@ -108,8 +108,7 @@ function displayLeads(leads) {
                     <strong>Lead ID: ${lead.lead_id}</strong>
                     <p>${lead.property_type} • ${lead.neighbourhood} • ${lead.distance_to_queens_km} km (From Queen's)</p>
                     <small class="metadata">
-                        Timeline: ${lead.requested_timeline} | Profit: ${lead.expected_profit_band} | Contact: ${lead.preferred_contact}  ${lead.referral_source} ${lead.lead_date}${lead.estimated_job_size_sqft} ${lead.lead_weekday} ${lead.has_pets} ${lead.lead_capture_weather}
-                    </small>
+                        Timeline: ${lead.requested_timeline} | Profit: ${lead.expected_profit_band} | Contact: ${lead.preferred_contact} 
                 </div>
             </div>
             <div class="score-container">

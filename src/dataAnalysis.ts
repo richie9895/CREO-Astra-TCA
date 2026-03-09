@@ -175,7 +175,7 @@ export async function runAnalysis(weights:weightings) {
             score = score + 1;
         }
 
-        if(lead.estimated_job_size_sqft !== null && lead.estimated_job_size_sqft <= 1000){
+        if(lead.estimated_job_size_sqft !== null){
             //handle square footage scoring, larger jobs have greater scores
             score = score + Math.floor(lead.estimated_job_size_sqft * weights.estimated_job_size_sqft_weight * 1/4000);
         }
@@ -187,14 +187,13 @@ export async function runAnalysis(weights:weightings) {
         if(isNaN(score)){
             score = 0;
         }
+        if(score > 100){
+            score = 100;
+        }
         lead.score = score;
     });
     //console.log(uniqueLeads.sort((a,b) => b.score - a.score));
-    console.log('top 5 scores:', uniqueLeads.slice(0,5).map(l => l.score));
-    console.log('bottom 5 scores:', uniqueLeads.slice(-5).map(l => l.score));
-    //return uniqueLeads.sort((a,b) => b.score - a.score);
     const sorted = uniqueLeads.sort((a,b) => b.score - a.score);
-    console.log('runAnalysis top 5:', sorted.slice(0,5).map(l => ({ id: l.lead_id, score: l.score })));
     return sorted;
 }
 
